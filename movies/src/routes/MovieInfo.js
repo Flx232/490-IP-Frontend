@@ -1,43 +1,29 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-const backendURL = `http://localhost:8000`;
 
-export default function MovieInfo({movieId, select}){
-    const [movieInfo, setMovieInfo] = useState({});
-    const [movieLoading, setMovieLoading] = useState(true);
-
-    const fetchMovieInfo = async () => {
-        setMovieLoading(true);
-        try{
-            const res = axios.get(`${backendURL}/movie/${movieId}`);
-            const data = (await res).data;
-            setMovieInfo(data);
-        }catch(error){
-            console.log(error);
-        }
-        setMovieLoading(false);
-    }
+export default function MovieInfo({link}){
+    const [movieInfo, setMovieInfo] = useState([]);
     
     useEffect (()=>{
+        const fetchMovieInfo = async () => {
+            try{
+                const res = axios.get(link);
+                const data = (await res).data;
+                setMovieInfo(data);
+            }catch(error){
+                console.log(error);
+            }
+        }
         fetchMovieInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[]);
+    },[link]);
 
     return(
         <div>
-            {console.log(movieInfo)}
-            {select && !movieLoading ?
             <table>
-                <thead>
-                    <tr key="Column Names">
-                        {movieInfo.columns.map((colName)=>(<th key={colName}>{colName}</th>))}
-                    </tr>
-                </thead>
                 <tbody>
-                    {movieInfo.data.map((data)=>(<tr key={data[0]}>{data.map((i)=>(<th key={i}>{i}</th>))}</tr>))}
+                    {movieInfo.map((data)=>(<tr key={data[0]}>{data.map((i)=>(<th key={i}>{i}</th>))}</tr>))}
                 </tbody>
-            </table> : <></>
-            }
+            </table>
         </div>
     );
 }
