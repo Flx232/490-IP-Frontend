@@ -4,40 +4,34 @@ import MovieInfo from './MovieInfo';
 const backendURL = `http://localhost:8000`;
 export default function Movies(){
     const [movies, setMovies] = useState([]);
-    const [filter, setFilter] = useState('');
-    const [type, setType] = useState('title');
+    const [title, setTitle] = useState('');
+    const [genre, setGenre] = useState('');
+    const [name, setName] = useState('');
     const [select, setSelect] = useState(false);
     const [movie, setMovie] = useState(0);
     const [custId, setCustId] = useState('');
     const [step, setStep] = useState(0);
-    const maxStep = Math.round(movies.length/20);
+    const numRows = 40;
+    const maxStep = Math.round(movies.length/numRows);
 
     useEffect(()=>{
         const fetchMovies = async() =>{
-            if(filter){
-                try{
-                    const res = await axios.get(`${backendURL}/movie/${type}/${filter}`)
-                    const data = (await res).data;
-                    setMovies(data);
-                }catch(error){
-                    console.log(error);
-                }
-            }else{
-                setMovies([]);
+            try{
+                const res = await axios.get(`${backendURL}/movie/info?title=${title}&actor=${name}&genre=${genre}`)
+                const data = (await res).data;
+                setMovies(data);
+            }catch(error){
+                console.log(error);
             }
         };
-        if(filter)
-            fetchMovies(filter);
-    }, [filter, type]);
-
-    function onType(e){
-        setType(e.target.getAttribute('id'));
-        setFilter(e.target.value);
-    }
+        fetchMovies();
+    }, [genre, name, title]);
 
     function handleFilterSubmit(e){
         e.preventDefault();
-        setFilter('');
+        setTitle('');
+        setGenre('');
+        setName('');
     }
 
     function handleRentSubmit(e){
@@ -72,22 +66,22 @@ export default function Movies(){
         <div>
             <form onSubmit={handleFilterSubmit}>
                 <label>Title</label>
-                <input id='title' value={type==='title'?filter:''} onChange={(e)=>(onType(e))} disabled={filter && type!=='title'}></input>
+                <input id='title' value={title} onChange={(e)=>(setTitle(e.target.value))}></input>
                 <label>Actor</label>
-                <input id='actor' value={type==='actor'?filter:''} onChange={(e)=>(onType(e))} disabled={filter && type!=='actor'}></input>
+                <input id='actor' value={name} onChange={(e)=>(setName(e.target.value))}></input>
                 <label>Genre</label>
-                <input id='genre' value={type==='genre'?filter:''} onChange={(e)=>(onType(e))} disabled={filter && type!=='genre'}></input>
+                <input id='genre' value={genre} onChange={(e)=>(setGenre(e.target.value))}></input>
                 <button>Clear</button>
             </form>
             {console.log(step)}
             <table>
-                {movies.map((row, index)=>index>=step*20 && index < ((step+1)*20 > movies.length ? movies.length : (step+1)*20)? (<tr>
+                {movies.map((row, index)=>index>=step*numRows && index < ((step+1)*numRows > movies.length ? movies.length : (step+1)*numRows)? (<tr>
                     {row.map((data, index)=>(index === 0 ? 
                         undefined : <th>{index === 1 ? <div onClick={()=>(handleSelect(row[0]))}>{data}</div> : data}</th>
                     ))}
                 </tr>): <></>)}
             </table>
-            {movies.length / 20 <= 1 ? <></> :
+            {movies.length / numRows <= 1 ? <></> :
                 <>
                     <button onClick={()=>handleStep("<<")}>{"<<"}</button>
                     <button onClick={()=>handleStep("<")}>{"<"}</button>

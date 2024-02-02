@@ -1,5 +1,6 @@
 import Home from './routes/Home';
 import Movies from './routes/Movies';
+import Customers from './routes/Customers'
 import { Routes, Route, Link } from 'react-router-dom';
 // import {useState, useEffect} from 'react'
 // import axios from 'axios';
@@ -17,7 +18,7 @@ function App() {
             <Link to="/movies">Movies</Link>
           </li>
           <li key="Customers">
-            <Link to="/">Customers</Link>
+            <Link to="/customers">Customers</Link>
           </li>
           <li key="Reports">
             <Link to="/">Reports</Link>
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/movies" element={<Movies />} />
+        <Route path="/customers" element={<Customers/>}/>
       </Routes>
     </div>
   );
