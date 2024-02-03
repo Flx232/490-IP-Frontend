@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios';
+import Paging from './Paging';
 import MovieInfo from './MovieInfo';
 const backendURL = `http://localhost:8000`;
 export default function Movies(){
@@ -9,9 +10,9 @@ export default function Movies(){
     const [name, setName] = useState('');
     const [select, setSelect] = useState(false);
     const [movie, setMovie] = useState(0);
-    const [custId, setCustId] = useState('');
     const [step, setStep] = useState(0);
-    const numRows = 40;
+    const [custId, setCustId] = useState('');
+    const numRows = 14;
     const maxStep = Math.round(movies.length/numRows);
 
     useEffect(()=>{
@@ -42,62 +43,66 @@ export default function Movies(){
     }
 
     function handleSelect(movieId){
-        if(movieId !== movie)
-            setMovie(movieId);
-        else
-            setSelect((s)=>!s);
+        setMovie(movieId);
+        setSelect(true);
     }
 
-    function handleStep(symbol){
-        if(symbol === '<<'){
-            setStep(0);
-        }else if(symbol === '>>'){
-            setStep(maxStep);
-        }else if(symbol === '<'){
-            if(step > 0)
-                setStep((s)=>s-1);
-        }else{
-            if(step < maxStep)
-                setStep((s)=>s+1);
-        }
+    function onType(e, state){
+        state(e.target.value)
+        setStep(0)
+    }
+
+    function onClose(){
+        setMovie(0)
+        setSelect(false);
     }
 
     return(
-        <div>
-            <form onSubmit={handleFilterSubmit}>
-                <label>Title</label>
-                <input id='title' value={title} onChange={(e)=>(setTitle(e.target.value))}></input>
-                <label>Actor</label>
-                <input id='actor' value={name} onChange={(e)=>(setName(e.target.value))}></input>
-                <label>Genre</label>
-                <input id='genre' value={genre} onChange={(e)=>(setGenre(e.target.value))}></input>
-                <button>Clear</button>
-            </form>
-            {console.log(step)}
-            <table>
-                {movies.map((row, index)=>index>=step*numRows && index < ((step+1)*numRows > movies.length ? movies.length : (step+1)*numRows)? (<tr>
-                    {row.map((data, index)=>(index === 0 ? 
-                        undefined : <th>{index === 1 ? <div onClick={()=>(handleSelect(row[0]))}>{data}</div> : data}</th>
-                    ))}
-                </tr>): <></>)}
-            </table>
-            {movies.length / numRows <= 1 ? <></> :
-                <>
-                    <button onClick={()=>handleStep("<<")}>{"<<"}</button>
-                    <button onClick={()=>handleStep("<")}>{"<"}</button>
-                    <button onClick={()=>handleStep(">")}>{">"}</button>
-                    <button onClick={()=>handleStep(">>")}>{">>"}</button>
-                </>
-            }
-            {select ?
-            <div>
-                <MovieInfo link={`${backendURL}/movie/${movie}`}/>
-                <form onSubmit={handleRentSubmit}>
-                    <label>Enter Customer Id</label>
-                    <input id='cu_id' value={custId} placeholder='' onChange={(e)=>(setCustId(Number(e.target.value)))}></input>
-                    <button disabled={!custId}>Rent</button>
+        <>
+            <div className="form">
+                <form onSubmit={handleFilterSubmit}>
+                    <label>Title</label>
+                    <input id='title' value={title} onChange={(e)=>(onType(e, setTitle))}/>
+                    <label>Actor</label>
+                    <input id='actor' value={name} onChange={(e)=>(onType(e, setName))}/>
+                    <label>Genre</label>
+                    <input id='genre' value={genre} onChange={(e)=>(onType(e, setGenre))}/>
+                    <button>Clear</button>
                 </form>
-            </div>:undefined}
-        </div>
+            </div>
+            <div className="row">
+                <table>
+                    <tr><th>Title</th><th>Rating</th><th>Description</th></tr>
+                    {movies.map((row, index)=>index>=step*numRows && index < ((step+1)*numRows > movies.length-1 ? movies.length : (step+1)*numRows)? (<tr>
+                        {row.map((data, index)=>(index === 0 ? 
+                            undefined : <td>{index === 1 ? <div onClick={()=>(handleSelect(row[0]))}>{data}</div> : data}</td>
+                        ))}
+                    </tr>): <></>)}
+                </table>
+            </div>
+            <div className = "modal" style={select ? {display:'block'} : {display:'none'}}>
+                <div className="model-content">
+                    {select ?<div className="card">
+                        <div className='description'>
+                            <button className="close" onClick={()=>(onClose() )}>&times;</button>
+                        </div>
+                        <MovieInfo link={`${backendURL}/movie/rented/${movie}`}>
+                            <div className='rent'>
+                                <form onSubmit={handleRentSubmit}>
+                                    <label>Enter Customer Id</label>
+                                    <input id='cu_id' value={custId} placeholder='' onChange={(e)=>(setCustId(Number(e.target.value)))}></input>
+                                    <button disabled={!custId}>Rent</button>
+                                </form>
+                            </div>
+                        </MovieInfo>
+                    </div> : <></>}
+                </div>
+            </div>
+            <div className="footer">
+                {movies.length / numRows <= 1 ? <></> :
+                <Paging maxStep={maxStep} setStep={setStep} step={step}/>
+                }
+            </div>
+        </>
     );
 }

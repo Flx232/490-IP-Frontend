@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios';
 import MovieInfo from './MovieInfo';
-import Table from './Table';
 import ActorInfo from './ActorInfo';
 
 const backendURL = `http://localhost:8000`;
@@ -47,26 +46,51 @@ export default function Home() {
   }, []);
   
   return (
-    <div>
-      <Table type="Top 5 movies">
-        {top5Movies.map((data)=>(
-        <tr key={data[0]}>
-          <th><div onClick={()=>handleMovieSelect(data[0])}>{data[1]}</div></th>
-        </tr>
-        ))}
-      </Table>
-      <br></br>
-      {movieSelect ? <MovieInfo link={`${backendURL}/movie/rented/${movie}`}/> : undefined}
-      <br></br>
-      <Table type="Top 5 actors">
-        {top5Actors.map((data)=>(
-        <tr key={data[0]}>
-          <th><div onClick={()=>handleActorSelect(data[0], `${data[1]} ${data[2]}`)}>{data[1]} {data[2]}</div></th>
-        </tr>
-        ))}
-      </Table>
-      <br></br>
-      {actorSelect ? <ActorInfo actor={actor}/> : undefined}
+    <>
+    <div className="row">
+      <div className="column">
+        <table>
+          <thead>
+            <tr>
+              <th>Top 5 Movies</th>
+            </tr>
+          </thead>
+          <tbody>
+            {top5Movies.map((data)=>(
+            <tr key={data[0]}>
+              <td><div onClick={()=>handleMovieSelect(data[0])}>{data[1]}</div></td>
+            </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="column">
+        <table>
+          <thead>
+            <tr>
+              <th>Top 5 actors</th>
+            </tr>
+          </thead>
+          <tbody>
+            {top5Actors.map((data)=>(
+            <tr key={data[0]}>
+              <td><div onClick={()=>handleActorSelect(data[0], `${data[1]} ${data[2]}`)}>{data[1]} {data[2]}</div></td>
+            </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
+    <div className="row">
+      <div className="column">
+        <div className="card">
+          {movieSelect ? <MovieInfo link={`${backendURL}/movie/rented/${movie}`}/> : undefined}
+        </div>
+      </div>
+      <div className="column">
+        {actorSelect ? <ActorInfo actor={actor}/> : undefined}
+      </div>
+    </div>
+    </>
   );
 }
