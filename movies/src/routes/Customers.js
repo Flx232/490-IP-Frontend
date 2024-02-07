@@ -53,16 +53,21 @@ export default function Customers(){
         }
     }
 
+    function onType(state, value){
+        state(value)
+        setStep(0)
+    }
+
     return(
         <>
             <div className="form">
                 <form onSubmit={handleFilterSubmit}>
                     <label>Customer Id</label>
-                    <input id='id' value={id} onChange={(e)=>(setId(Number(e.target.value)))}></input>
+                    <input id='id' value={first && last ? 0 : id} onChange={(e)=>(onType(setId, Number(e.target.value)))} disabled={id===0 && (first || last)}></input>
                     <label>First Name</label>
-                    <input id='first' value={first} onChange={(e)=>(setFirst(e.target.value))}></input>
+                    <input id='first' value={id ? '' : first} onChange={(e)=>(onType(setFirst, e.target.value))} disabled={id !== 0}></input>
                     <label>Last Name</label>
-                    <input id='last' value={last} onChange={(e)=>(setLast(e.target.value))}></input>
+                    <input id='last' value={id ? '' : last} onChange={(e)=>(onType(setLast,e.target.value))} disabled={id !== 0}></input>
                     <button className='delete'>Clear</button>
                 </form>
                 <button className='add'>Add Customer</button>

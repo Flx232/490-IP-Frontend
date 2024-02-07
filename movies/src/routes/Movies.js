@@ -75,7 +75,7 @@ export default function Movies(){
                     <input id='actor' value={name} onChange={(e)=>(onType(e, setName))}/>
                     <label>Genre</label>
                     <input id='genre' value={genre} onChange={(e)=>(onType(e, setGenre))}/>
-                    <button>Clear</button>
+                    <button className="delete">Clear</button>
                 </form>
             </div>
             <div className="row">
