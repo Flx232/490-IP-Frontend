@@ -12,7 +12,7 @@ export default function Customers(){
     const [customer, setCustomer] = useState(0);
     const [first, setFirst] = useState('');
     const [last, setLast] = useState('');
-    const numRows = 13;
+    const numRows = 12;
     const maxStep = Math.floor(customers.length/numRows);
 
     useEffect(()=>{
@@ -35,11 +35,22 @@ export default function Customers(){
         setLast('')
     }
 
-    function handleInfoClick(id){
-        if(id !== customer)
-            setCustomer(id);
-        else
-            setSelect((s)=>!s);
+    function handleInfoClick(cust){
+        setCustomer(cust);
+        setSelect(true);
+    }
+
+    function onClose(){
+        setCustomer([])
+        setSelect(false);
+    }
+
+    function outsideModal(e){
+        const card = document.querySelector('.card');
+        if (card && !card.contains(e.target)) {
+            setCustomer([]);
+            setSelect(false);
+        }
     }
 
     return(
@@ -52,24 +63,43 @@ export default function Customers(){
                     <input id='first' value={first} onChange={(e)=>(setFirst(e.target.value))}></input>
                     <label>Last Name</label>
                     <input id='last' value={last} onChange={(e)=>(setLast(e.target.value))}></input>
-                    <button>Clear</button>
+                    <button className='delete'>Clear</button>
                 </form>
+                <button className='add'>Add Customer</button>
             </div>
             <div className="row">
                 <table>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                    </tr>
                     {customers.map((row, rowIndex)=>rowIndex>=step*numRows && rowIndex < ((step+1)*numRows > customers.length ? customers.length : (step+1)*numRows)? (<tr>
                         {row.map((data, index)=>(
-                            index !== 0 ? 
+                            index !== 0 && index <=3 ? 
                             <>
                                 <td><div>{data}</div></td>
                             </> : <></>))}
-                        <td><button className="info" onClick={()=>handleInfoClick(customers[rowIndex][0])}>Info</button></td>
+                        <td><button className="info" onClick={()=>handleInfoClick(customers[rowIndex])}>Info</button></td>
                         <td><button className="delete">Delete</button></td>
                     </tr>): <></>)}
                 </table>
             </div>
-            {select ?
-            <CustomerInfo link1={`${backendURL}/customer/${customer}`} link2={`${backendURL}/rental/${customer}`}/>:undefined}
+            <div className = "modal" style={select ? {display:'block'} : {display:'none'}} onClick={(e) => (outsideModal(e))}>
+                <div className="modal-spacing">
+                    {select ?<div className="card" style={{backgroundColor: "#fefefe", border: "1px solid #888"}}>
+                        <div className='description'>
+                            <button className="close" onClick={()=>(onClose() )}>&times;</button>
+                        </div>
+                        <div className='description'>
+                            <h2>{customer[1]} {customer[2]}</h2>
+                            <h2>Email: {customer[3]}</h2>
+                            <h2>Address: {customer[4]}</h2>
+                        </div>
+                        <CustomerInfo custId = {customer[0]}/>
+                    </div>:<></>}
+                </div>
+            </div>
             <div className="footer">
                 {customers.length / numRows <= 1 ? <></> :
                     <Paging maxStep={maxStep} setStep={setStep} step={step}/>}

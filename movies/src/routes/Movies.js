@@ -57,6 +57,14 @@ export default function Movies(){
         setSelect(false);
     }
 
+    function outsideModal(e){
+        const card = document.querySelector('.card');
+        if (card && !card.contains(e.target)) {
+            setMovie(0);
+            setSelect(false);
+        }
+    }
+
     return(
         <>
             <div className="form">
@@ -80,9 +88,14 @@ export default function Movies(){
                     </tr>): <></>)}
                 </table>
             </div>
-            <div className = "modal" style={select ? {display:'block'} : {display:'none'}}>
-                <div className="model-content">
-                    {select ?<div className="card">
+            <div className="footer">
+                {movies.length / numRows <= 1 ? <></> :
+                <Paging maxStep={maxStep} setStep={setStep} step={step}/>
+                }
+            </div>
+            <div className = "modal" style={select ? {display:'block'} : {display:'none'}} onClick={(e) => (outsideModal(e))}>
+                <div className="modal-spacing">
+                    {select ?<div className="card" style={{backgroundColor: "#fefefe", border: "1px solid #888"}}>
                         <div className='description'>
                             <button className="close" onClick={()=>(onClose() )}>&times;</button>
                         </div>
@@ -97,11 +110,6 @@ export default function Movies(){
                         </MovieInfo>
                     </div> : <></>}
                 </div>
-            </div>
-            <div className="footer">
-                {movies.length / numRows <= 1 ? <></> :
-                <Paging maxStep={maxStep} setStep={setStep} step={step}/>
-                }
             </div>
         </>
     );
