@@ -5,7 +5,7 @@
 .body{
   display: flex;
   flex-direction: column;
-  height: 1090px;
+  height: 1100px;
   margin-left: 20rem;
   margin-right: 20rem;
   padding-top:30px;
@@ -155,31 +155,22 @@ tr:nth-child(even) {
 }
 
 .form{
+  flex-wrap: wrap;
+  display: flex;
   text-align:center;
-  padding-bottom:30px;
+  padding-bottom:10px;
 }
 
 .form label{
   padding-right:10px;
-  padding-left:50px;
+  padding-left:30px;
   font-weight:bold;
-  font-size:25px;
+  font-size:20px;
 }
 
 .form input{
   border-radius:5px;
   border: 1px solid #ccc;
-}
-
-.form button{
-  margin-left:30px;
-  background-color: #f44336;
-  font-size: 20px;
-  color: white;
-  border-radius:15px;
-  border:none;
-  font-weight:bold;
-  width:80px;
 }
 
 footer{
@@ -190,7 +181,7 @@ footer{
 }
 
 .pagination{
-  padding: 30px 0;
+  padding: 0 30px 0 20px;
   justify-content:center;
 }
 
@@ -231,24 +222,39 @@ footer{
   width:80px;
 }
 
+.form button{
+  margin-top:20px;
+  margin-left:30px;
+}
+
+.add{
+  background-color: #04AA6D;
+  font-size: 20px;
+  color: white;
+  border-radius:15px;
+  border:none;
+  font-weight:bold;
+  width:10%;
+}
+
 .modal {
   display: none; /* Hidden by default */
-  position: fixed;
-  z-index: 3; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+.modal-spacing {
+  display:flex;
+  margin-left: 25%;
+  padding-top: 10%;
+  margin-right: 25%;
+}
+
+/* Clearfix (clear floats) */
+.modal-spacing::after {
+  content: "";
+  clear: both;
+  display: table;
 }
 
 .close{
@@ -273,14 +279,14 @@ footer{
 
 .rent{
   text-align:left;
-  padding-bottom:30px;
+  padding-bottom:50px;
 }
 
 .rent label{
   padding-right:10px;
   padding-left:50px;
   font-weight:bold;
-  font-size:25px;
+  font-size:20px;
 }
 
 .rent input{
@@ -297,9 +303,4 @@ footer{
   border:none;
   font-weight:bold;
   width:80px;
-}
-
-.pagination button:disabled{
-  background-color: #008bba9a;
-  color: rgba(255, 255, 255, 0.653);  
 }

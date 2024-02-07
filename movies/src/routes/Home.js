@@ -83,9 +83,11 @@ export default function Home() {
     </div>
     <div className="row">
       <div className="column">
+        {movieSelect ?
         <div className="card">
           {movieSelect ? <MovieInfo link={`${backendURL}/movie/rented/${movie}`}/> : undefined}
-        </div>
+        </div> : undefined
+        }
       </div>
       <div className="column">
         {actorSelect ? <ActorInfo actor={actor}/> : undefined}

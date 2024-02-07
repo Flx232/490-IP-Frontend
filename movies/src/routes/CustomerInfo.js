@@ -1,46 +1,44 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Paging from './Paging';
+const backendURL = `http://localhost:8000`;
 
-export default function CustomerInfo({link1, link2}){
-    const [customerInfo, setCustomerInfo] = useState([]);
+export default function CustomerInfo({custId}){
     const [rentalInfo, setRentalInfo] = useState([]);
+    const [step, setStep] = useState(0);
+    const numRows = 5;
+    const maxStep = Math.floor(rentalInfo.length/numRows);
     
     useEffect (()=>{
         const fetchMovieInfo = async () => {
             try{
-                const res1 = axios.get(link1);
-                const res2 = axios.get(link2);
-                const data1 = (await res1).data;
+                const res2 = axios.get(`${backendURL}/rental/${custId}`);
                 const data2 = (await res2).data;
-                setCustomerInfo(data1);
                 setRentalInfo(data2);
             }catch(error){
                 console.log(error);
             }
         }
         fetchMovieInfo();
-    },[link1, link2]);
+    },[custId]);
 
     return(
-        <div>
+        <>
+        <div className="labels">
             <table>
                 <tbody>
-                    {customerInfo.map((data)=>(<tr>
-                        {data.map((i,index)=>(<th>
-                            {index !== data.length-1 ? i : i===1 ? "active": "not active"}
-                        </th>))}
-                    </tr>))}
-                </tbody>
-            </table>
-            <table>
-                <tbody>
-                    {rentalInfo.map((data)=>(<tr>
-                        {data.map((i)=>(<th>
+                    {rentalInfo.map((data, rowIndex)=>rowIndex>=step*numRows && rowIndex < ((step+1)*numRows > rentalInfo.length ? rentalInfo.length : (step+1)*numRows)? (<tr>
+                        {data.map((i)=>(<td>
                             {i}
-                        </th>))}
-                    </tr>))}
+                        </td>))}
+                    </tr>): <></>)}
                 </tbody>
             </table>
         </div>
+        <div className="footer">
+        {rentalInfo.length / numRows <= 1 ? <></> :
+            <Paging maxStep={maxStep} setStep={setStep} step={step}/>}
+        </div>
+        </>
     );
 }
