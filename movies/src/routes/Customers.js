@@ -12,6 +12,7 @@ export default function Customers(){
     const [customer, setCustomer] = useState(0);
     const [first, setFirst] = useState('');
     const [last, setLast] = useState('');
+    const [formSelect, setFormSelect] = useState(false);
     const numRows = 12;
     const maxStep = Math.floor(customers.length/numRows);
 
@@ -58,6 +59,10 @@ export default function Customers(){
         setStep(0)
     }
 
+    function handleEditClick(){
+        setFormSelect((s) => (!s));
+    }
+
     return(
         <>
             <div className="form">
@@ -97,11 +102,32 @@ export default function Customers(){
                             <button className="close" onClick={()=>(onClose() )}>&times;</button>
                         </div>
                         <div className='description'>
-                            <h2>{customer[1]} {customer[2]}</h2>
-                            <h2>Email: {customer[3]}</h2>
-                            <h2>Address: {customer[4]}</h2>
+                            <h2>{customer[1]} {customer[2]} {customer[5] ? "(Active)" : "(Not Active)"}</h2>
+                            <p>Email: {customer[3]} <span>|</span> Address: {customer[4]}
+                            <br></br>
+                            <br></br>
+                            <CustomerInfo custId = {customer[0]}/></p>
                         </div>
-                        <CustomerInfo custId = {customer[0]}/>
+                        <div className='edit'>
+                            <button onClick={()=>(handleEditClick())}>Edit</button>
+                            {formSelect ? 
+                            <div className='edit-form'>
+                                <form>
+                                    <label>Name</label>
+                                    <input></input>
+                                    <label>Address</label>
+                                    <input></input>
+                                    <label>Email</label>
+                                    <input></input>
+                                    <label>Store</label>
+                                    <input></input>
+                                    <label>Activity</label>
+                                    <input></input>
+                                    <button>Submit</button>
+                                </form>
+                            </div>:
+                            <></>}
+                        </div>
                     </div>:<></>}
                 </div>
             </div>
