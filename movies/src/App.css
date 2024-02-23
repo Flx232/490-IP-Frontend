@@ -348,6 +348,7 @@ footer{
   margin-top:1.2rem;
   -moz-transform: scale(1.5);
   -webkit-transform: scale(1.5);
+  transform: scale(1.5);
 }
 
 .edit-form input:focus,
