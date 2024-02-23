@@ -11,9 +11,16 @@ export default function Movies(){
     const [select, setSelect] = useState(false);
     const [movie, setMovie] = useState(0);
     const [step, setStep] = useState(0);
-    const [custId, setCustId] = useState('');
+    const [total, setTotal] = useState(0);
     const numRows = 14;
     const maxStep = Math.round(movies.length/numRows);
+    const rentMovie = async(rent) =>{
+        try{
+            await axios.post(`${backendURL}/movie/rent`, rent);
+        }catch(error){
+            console.log(error);
+        }
+    };
 
     useEffect(()=>{
         const fetchMovies = async() =>{
@@ -37,14 +44,30 @@ export default function Movies(){
 
     function handleRentSubmit(e){
         e.preventDefault();
-        setCustId('');
+        const data = new FormData(e.target);
+        const rent = {
+            customer_id:data.get("customer"),
+            staff_id:data.get("staff"),
+            film_id:movie
+        }
         setMovie(0);
         setSelect(false);
+        rentMovie(rent);
     }
 
     function handleSelect(movieId){
-        setMovie(movieId);
-        setSelect(true);
+        const fetchMovieStock = async() =>{
+            try{
+                const res = await axios.get(`${backendURL}/movie/total/${movieId}`)
+                const data = (await res).data;
+                setTotal(data);
+                setMovie(movieId);
+                setSelect(true);
+            }catch(error){
+                console.log(error);
+            }
+        };
+        fetchMovieStock();
     }
 
     function onType(e, state){
@@ -98,13 +121,19 @@ export default function Movies(){
                     {select ?<div className="card" style={{backgroundColor: "#fefefe", border: "1px solid #888"}}>
                         <div className='description'>
                             <button className="close" onClick={()=>(onClose() )}>&times;</button>
+                            <h2>Total number in Stock: {total[0][0]}</h2>
                         </div>
                         <MovieInfo link={`${backendURL}/movie/rented/${movie}`}>
                             <div className='rent'>
                                 <form onSubmit={handleRentSubmit}>
-                                    <label>Enter Customer Id</label>
-                                    <input id='cu_id' value={custId} placeholder='' onChange={(e)=>(setCustId(Number(e.target.value)))}></input>
-                                    <button disabled={!custId}>Rent</button>
+                                    <label for="customer">Enter Customer Id</label>
+                                    <input name="customer" id="customer" required></input>
+                                    <label for="staff">Staff Id</label>
+                                    <select name="staff" id="staff">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                    <button disabled={total[0][0] === 0}>Rent</button>
                                 </form>
                             </div>
                         </MovieInfo>

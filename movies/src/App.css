@@ -227,14 +227,14 @@ footer{
   margin-left:30px;
 }
 
-.add{
+.add button{
   background-color: #04AA6D;
   font-size: 20px;
   color: white;
   border-radius:15px;
   border:none;
   font-weight:bold;
-  width:10%;
+  width:110%;
 }
 
 .modal {
@@ -319,4 +319,65 @@ footer{
   border:none;
   font-weight:bold;
   width:80px;
+}
+
+.edit-form {
+  font-size: 1.6rem;
+  align-items: right;
+  gap: 1.2rem;
+  border-radius: 7px;
+  padding: 0 2rem 3.2rem 4rem;
+}
+
+.edit-form label {
+  font-weight: 500;
+  margin-right:1.2rem;
+}
+
+.edit-form input, select {
+  font-family: inherit;
+  color: inherit;
+  font-size: 1.5rem;
+  margin-bottom:1rem;
+  border: 1px solid;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.check{
+  margin-top:1.2rem;
+  -moz-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+}
+
+.edit-form input:focus,
+select:focus {
+  outline:none;
+  border: 1px solid var(--color-dark);
+}
+
+.edit-form form{
+  padding-left:5.2rem;
+}
+
+.edit-form form .button {
+  margin-top: 1.rem;
+  grid-column: 2;
+  background-color: #c1c1c1;
+  margin-bottom:30px;
+  font-size: 20px;
+  color: rgb(0, 0, 0);
+  border-radius:8px;
+  border:none;
+  font-weight:bold;
+  width:80px;
+}
+
+.back{
+  background-color:transparent;
+  border-color:transparent;
+  font-size: 6rem;
+  color: rgb(189, 189, 189);
+  text-shadow:2px 0 #c1c1c1, -2px 0 #c1c1c1, 0 2px #c1c1c1, 0 -2px #c1c1c1,
+  1px 1px #c1c1c1, -1px -1px #c1c1c1, 1px -1px #c1c1c1, -1px 1px #c1c1c1;
 }
