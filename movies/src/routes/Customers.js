@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react'
+import { Link } from 'react-router-dom';
 import CustomerInfo from './CustomerInfo';
 import Paging from './Paging';
 import axios from 'axios';
@@ -9,10 +10,9 @@ export default function Customers(){
     const [step, setStep] = useState(0);
     const [id, setId] = useState(0);
     const [select, setSelect] = useState(false);
-    const [customer, setCustomer] = useState(0);
+    const [customer, setCustomer] = useState([]);
     const [first, setFirst] = useState('');
     const [last, setLast] = useState('');
-    const [formSelect, setFormSelect] = useState(false);
     const numRows = 12;
     const maxStep = Math.floor(customers.length/numRows);
 
@@ -41,6 +41,18 @@ export default function Customers(){
         setSelect(true);
     }
 
+    function handleDeleteClick(id){
+        const deleteCustomer = async(id) =>{
+            try{
+                await axios.delete(`${backendURL}/customer/remove/${id}`);
+                window.location.reload();
+            }catch(error){
+                console.log(error);
+            }
+        };
+        deleteCustomer(id);
+    }
+
     function onClose(){
         setCustomer([])
         setSelect(false);
@@ -59,10 +71,6 @@ export default function Customers(){
         setStep(0)
     }
 
-    function handleEditClick(){
-        setFormSelect((s) => (!s));
-    }
-
     return(
         <>
             <div className="form">
@@ -75,7 +83,11 @@ export default function Customers(){
                     <input id='last' value={id ? '' : last} onChange={(e)=>(onType(setLast,e.target.value))} disabled={id !== 0}></input>
                     <button className='delete'>Clear</button>
                 </form>
-                <button className='add'>Add Customer</button>
+                <Link to="/add">
+                    <div className='add'>
+                        <button>Add Customer</button>
+                    </div>
+                </Link>
             </div>
             <div className="row">
                 <table>
@@ -91,7 +103,7 @@ export default function Customers(){
                                 <td><div>{data}</div></td>
                             </> : <></>))}
                         <td><button className="info" onClick={()=>handleInfoClick(customers[rowIndex])}>Info</button></td>
-                        <td><button className="delete">Delete</button></td>
+                        <td><button className="delete" onClick={()=>handleDeleteClick(customers[rowIndex][0])}>Delete</button></td>
                     </tr>): <></>)}
                 </table>
             </div>
@@ -108,26 +120,12 @@ export default function Customers(){
                             <br></br>
                             <CustomerInfo custId = {customer[0]}/></p>
                         </div>
-                        <div className='edit'>
-                            <button onClick={()=>(handleEditClick())}>Edit</button>
-                            {formSelect ? 
-                            <div className='edit-form'>
-                                <form>
-                                    <label>Name</label>
-                                    <input></input>
-                                    <label>Address</label>
-                                    <input></input>
-                                    <label>Email</label>
-                                    <input></input>
-                                    <label>Store</label>
-                                    <input></input>
-                                    <label>Activity</label>
-                                    <input></input>
-                                    <button>Submit</button>
-                                </form>
-                            </div>:
-                            <></>}
-                        </div>
+                        
+                        <Link to="/edit" state={customer}>
+                            <div className='edit'>
+                                <button>Edit</button>
+                            </div>
+                        </Link>
                     </div>:<></>}
                 </div>
             </div>

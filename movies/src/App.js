@@ -1,8 +1,10 @@
 import Home from './routes/Home';
 import Movies from './routes/Movies';
-import Customers from './routes/Customers'
-import './App.css'
+import Customers from './routes/Customers';
+import './App.css';
 import { Routes, Route, Link } from 'react-router-dom';
+import Edit from './routes/Edit';
+import Add from './routes/Add';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
@@ -21,9 +23,6 @@ function App() {
             <li key="Customers">
               <Link to="/customers" className="link-style">Customers</Link>
             </li>
-            <li key="Reports">
-              <Link to="/" className="link-style">Reports</Link>
-            </li>
           </ul>
         </nav>
       </div>
@@ -33,6 +32,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/customers" element={<Customers/>}/>
+            <Route path="/edit" element={<Edit/>}/>
+            <Route path="/add" element={<Add/>}/>
           </Routes>
         </div>
       </div>
