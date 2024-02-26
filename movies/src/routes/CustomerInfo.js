@@ -22,7 +22,11 @@ export default function CustomerInfo({custId}){
         <>
         {rentalInfo.length === 0 ? <></> :
             <>
-                Total Number of Rentals: {rentalInfo[0][0]}<span> | </span>Number of Movies that have been returned: {rentalInfo[0][0] - rentalInfo[0][1]}
+                Total Number of Rentals: {rentalInfo[0][0]}
+                <span> | </span>
+                Number of Movies that have been returned: {rentalInfo[0][0] - rentalInfo[0][1]}
+                <br></br><br></br>
+                Number of movies rented out: {rentalInfo[0][1]}
             </>
         }
         </>

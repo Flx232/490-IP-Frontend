@@ -6,6 +6,8 @@ import { Routes, Route, Link } from 'react-router-dom';
 import Edit from './routes/Edit';
 import Add from './routes/Add';
 import 'bootstrap/dist/css/bootstrap.css';
+import RentInfo from './routes/RentInfo';
+import Return from './routes/Return';
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
             <Route path="/customers" element={<Customers/>}/>
             <Route path="/edit" element={<Edit/>}/>
             <Route path="/add" element={<Add/>}/>
+            <Route path="/rent" element={<RentInfo/>}/>
+            <Route path="/manage" element={<Return/>}/>
           </Routes>
         </div>
       </div>
