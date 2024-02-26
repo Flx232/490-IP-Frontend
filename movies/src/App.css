@@ -123,15 +123,15 @@ tr:nth-child(even) {
 }
 
 .description p{
-  padding: 5px 32px 32px;
+  padding: 10px 32px 10px;
   font-weight: bolder;
   font-size: 25px;
 }
 
 .description h2{
   padding-left: 32px;
-  padding-bottom: 10px;
-  padding-top: 24px;
+  padding-bottom: 5px;
+  padding-top: 10px;
   font-weight:bold;
 }
 
@@ -141,7 +141,7 @@ tr:nth-child(even) {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 16px;
-  padding:0 30px;
+  padding:0 32px;
 }
 .label p{
   align-items: center;
@@ -306,7 +306,7 @@ footer{
 
 .edit{
   text-align: center;
-  padding-bottom:50px;
+  padding-bottom:30px;
 }
 
 .edit button{
@@ -323,7 +323,7 @@ footer{
 
 .edit-form {
   font-size: 1.6rem;
-  align-items: right;
+  align-items: left;
   gap: 1.2rem;
   border-radius: 7px;
   padding: 0 2rem 3.2rem 4rem;
@@ -361,6 +361,11 @@ select:focus {
   padding-left:5.2rem;
 }
 
+.grid{
+  display:grid;
+  grid-template-columns: auto auto auto auto;
+}
+
 .edit-form form .button {
   margin-top: 1.rem;
   grid-column: 2;
@@ -377,8 +382,33 @@ select:focus {
 .back{
   background-color:transparent;
   border-color:transparent;
-  font-size: 6rem;
+  font-size: 3rem;
   color: rgb(189, 189, 189);
   text-shadow:2px 0 #c1c1c1, -2px 0 #c1c1c1, 0 2px #c1c1c1, 0 -2px #c1c1c1,
   1px 1px #c1c1c1, -1px -1px #c1c1c1, 1px -1px #c1c1c1, -1px 1px #c1c1c1;
+}
+
+.head {
+  padding-left: 40px;
+  padding-top: 20px;
+  padding-right: 40px;
+  padding-bottom: 30px;
+}
+
+.manage {
+  text-align: center;
+  padding-bottom:30px;
+  padding-right:10px;
+}
+
+.manage button{
+  margin-left:30px;
+  background-color: #008CBA;
+  margin-bottom:30px;
+  font-size: 20px;
+  color: white;
+  border-radius:15px;
+  border:none;
+  font-weight:bold;
+  width:100%;
 }

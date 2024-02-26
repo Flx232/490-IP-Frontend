@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react'
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Paging from './Paging';
 import MovieInfo from './MovieInfo';
@@ -137,6 +138,13 @@ export default function Movies(){
                                 </form>
                             </div>
                         </MovieInfo>
+                        <div className="labels">
+                            <Link to="/manage" state={movie}>
+                                <div className='manage'>
+                                    <button>Manage</button>
+                                </div>
+                            </Link>
+                        </div>
                     </div> : <></>}
                 </div>
             </div>

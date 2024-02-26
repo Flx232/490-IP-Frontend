@@ -114,18 +114,43 @@ export default function Customers(){
                             <button className="close" onClick={()=>(onClose() )}>&times;</button>
                         </div>
                         <div className='description'>
-                            <h2>{customer[1]} {customer[2]} {customer[5] ? "(Active)" : "(Not Active)"}</h2>
-                            <p>Email: {customer[3]} <span>|</span> Address: {customer[4]}
-                            <br></br>
-                            <br></br>
-                            <CustomerInfo custId = {customer[0]}/></p>
+                            <h2>{customer[0]} {customer[1]} {customer[2]} {customer[5] ? "(Active)" : "(Not Active)"}</h2>
                         </div>
-                        
-                        <Link to="/edit" state={customer}>
-                            <div className='edit'>
-                                <button>Edit</button>
+                        <div className='labels'>
+                            <div className="label">
+                                <p>Email: <span>{customer[3]}</span></p>
                             </div>
-                        </Link>
+                            <div className="label">
+                                <p>Address: <span>{customer[4]}</span></p>
+                            </div>
+                            <div className="label">
+                                <p>District: <span>{customer[10]}</span></p>
+                            </div>
+                            <div className="label">
+                                <p>Location: <span>{customer[9]}, {customer[8]}</span></p>
+                            </div>
+                            <div className="label">
+                                <p>Phone Number: <span>{customer[7]}</span></p>
+                            </div>
+                            {customer[11] ? <div className="label">
+                                <p>Postal: <span>{customer[11]}</span></p>
+                            </div> : <></>}
+                        </div>
+                        <div className='description'>
+                            <p><CustomerInfo custId = {customer[0]}/></p>
+                        </div>
+                        <div className = "labels">
+                            <Link to="/rent" state={customer}>
+                                <div className='manage'>
+                                    <button>More Info</button>
+                                </div>
+                            </Link>
+                            <Link to="/edit" state={customer}>
+                                <div className='edit'>
+                                    <button>Edit</button>
+                                </div>
+                            </Link>
+                        </div>
                     </div>:<></>}
                 </div>
             </div>
