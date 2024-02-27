@@ -64,7 +64,7 @@ export default function Add(){
             return;
         }
         console.log(customer.postal.length);
-        const re_postal = /^[0-9\s]{6}$/
+        const re_postal = /^[0-9\s]{3,6}$/
         if(customer.postal.length !== 0 && !re_postal.test(customer.postal)){
             alert('Please enter a valid postal code.');
             return;

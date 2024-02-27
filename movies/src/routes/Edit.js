@@ -64,7 +64,7 @@ export default function Edit(){
             alert('Please enter a valid phone number.');
             return;
         }
-        const re_address=/^[0-9\s]{1,3} [A-Za-z]+ [A-Za-z]+$/
+        const re_address=/^[0-9\s]{1,} [A-Za-z]+ [A-Za-z]+$/
         if(!re_address.test(customer.address)){
             alert('Please enter a valid address.');
             return;
@@ -80,7 +80,7 @@ export default function Edit(){
             return;
         }
         if(customer.postal.length > 0){
-            const re_postal = /^[0-9\s]{6}$/
+            const re_postal = /[0-9\s]{3,6}/
             if(!re_postal.test(customer.postal)){
                 alert('Please enter a valid postal code.');
                 return;

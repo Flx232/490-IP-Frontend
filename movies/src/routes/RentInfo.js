@@ -73,7 +73,7 @@ export default function RentInfo(){
             </>
             : 
             <div className="row">
-                <h2>{history.length > 0 ? "It seems they didn't return anything yet" : "It seems they didn't rent out anything"}</h2>
+                <h2>{rentOut.length > 0 ? "It seems they didn't return anything yet" : "It seems they didn't rent out anything"}</h2>
             </div>: <></>}
             {!loading ? rentOut.length > 0 ? 
             <>
