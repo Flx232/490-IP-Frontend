@@ -45,9 +45,7 @@ export default function Customers(){
         const deleteCustomer = async(id) =>{
             try{
                 const result = await axios.delete(`${backendURL}/customer/remove/${id}`);
-                if(result.data === "has balance")
-                    window.alert("This customer still has a balance");
-                else if(result.data === "invald")
+                if(result.data === "invalid")
                     window.alert("Customer still has movies rented out!");
                 else
                     window.location.reload();
