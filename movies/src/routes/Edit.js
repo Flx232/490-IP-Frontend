@@ -22,6 +22,7 @@ export default function Edit(){
         try{
             const result = await axios.patch(`${backendURL}/customer/edit`, customer);
             const res = result.data;
+            console.log(res);
             if(res === "same email"){
                 window.alert("The email already exists");
             }else if(res === "invalid postal"){
@@ -70,12 +71,12 @@ export default function Edit(){
         }
         const re_city=/^[A-Za-z]+ *[A-Za-z]*$/
         if(!re_city.test(customer.city)){
-            alert('Please enter a valid address.');
+            alert('Please enter a valid city.');
             return;
         }
         const re_district=/^[A-Za-z]+ *[A-Za-z]*$/
         if(!re_district.test(customer.district)){
-            alert('Please enter a valid address.');
+            alert('Please enter a valid district.');
             return;
         }
         const re_postal = /^[0-9\s]{6}$/
@@ -83,6 +84,7 @@ export default function Edit(){
             alert('Please enter a valid postal code.');
             return;
         }
+        console.log(customer);
         editCustomers(customer);
     }
     return(
@@ -103,37 +105,33 @@ export default function Edit(){
                         <div className="field">
                             <label for="email">Email</label><br></br>
                             <input name="email" id="email" value={email} onChange={(e)=>(setEmail(e.target.value))} 
-                            pattern='/^[A-Za-z0-9]+[A-Za-z0-9._]+[A-Za-z0-9]+@[A-Za-z0-9]+[A-Za-z0-9.-]+[A-Za-z0-9]+\.[A-Za-z]{2,}$/'
                             required></input>
                         </div>
                         <div className="field">
                             <label for="phone">Phone Number</label><br></br>
                             <input name="phone" id="phone" value={phone} onChange={(e)=>(setPhone(e.target.value))} 
-                            pattern="/^[0-9\s]{9,12}$/" minLength="9" maxlength="12" type="number"
+                            minLength="9" maxlength="12" type="number"
                             required></input>
                         </div>
                         <div className="field">
                             <label for="address">Address</label><br></br>
                             <input name="address" id="address" value={address} onChange={(e)=>(setAddress(e.target.value))} 
-                            pattern="/^[0-9\s]{1,3} [A-Za-z]+ [A-Za-z]+$/"
                             required></input>
                         </div>
                         <div className="field">
                             <label for="city">City</label><br></br>
                             <input name="city" id="city" value={city} onChange={(e)=>(setCity(e.target.value))} 
-                            pattern="/^[A-Za-z]+ *[A-Za-z]*$/"
                             required></input>
                         </div>
                         <div className="field">
                             <label for="district">District</label><br></br>
                             <input name="district" id="district" value={district} onChange={(e)=>(setDistrict(e.target.value))} 
-                            pattern="/^[A-Za-z]+ *[A-Za-z]*$/"
                             required></input>
                         </div>
                         <div className="field">
                             <label for="postal">Postal Code</label><br></br>
                             <input name="postal" id="postal" value={postal} onChange={(e)=>(setPostal(e.target.value))}
-                            pattern="/^[0-9\s]{6}$/" minLength="6" maxlength="6" type="number"
+                            minLength="6" maxlength="6" type="number"
                             ></input>
                         </div>
                     </div>
