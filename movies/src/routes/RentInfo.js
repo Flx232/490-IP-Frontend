@@ -10,6 +10,7 @@ export default function RentInfo(){
     const [step1, setStep1] = useState(0);
     const [step2, setStep2] = useState(0);
     const [history, setHistory] = useState([]);
+    const [rentOut, setRentOut] = useState([]);
     const [loading, setLoading] = useState(true);
     const customer = location.state;
     const numRows = 2;
@@ -20,7 +21,8 @@ export default function RentInfo(){
                 setLoading(true);
                 const res = await axios.get(`${backendURL}/customer/rent_hist/${customer[0]}`)
                 const data = (await res).data;
-                setHistory(data);
+                setHistory(data[0]);
+                setRentOut(data[1]);
                 setLoading(false);
             }catch(error){
                 console.log(error);
@@ -29,19 +31,35 @@ export default function RentInfo(){
         fetchMovies();
     }, [customer]);
 
+    function onClickReturn(id){
+        const return_movie = {
+            customer_id: customer[0],
+            film_id: id
+        };
+        const returnMovie = async(return_movie) =>{
+            try{
+                await axios.patch(`${backendURL}/return/movie`, return_movie);
+                window.location.reload();
+            }catch(error){
+                console.log(error);
+            }
+        };
+        returnMovie(return_movie);
+    }
+
     return(
         <>
             <div className="head">
                 <button className="back" onClick={()=>(nav('/customers'))}>←</button>
                 <h1>{customer[1]} {customer[2]}'s Rental History</h1>
             </div>
-            {!loading ? history[0].length > 0 ? 
+            {!loading ? history.length > 0 ? 
             <>
                 <div className="row">
                     <h2>Past Rentals</h2>
                     <table>
                         <tr><th>Title</th><th>Rating</th><th>Description</th><th>Rental Date</th><th>Return Date</th></tr>
-                        {history[0].map((row, index)=>(index>=step1*numRows && index < ((step1+1)*numRows > history[0].length-1 ? history[0].length : (step1+1)*numRows)? (<tr>
+                        {history.map((row, index)=>(index>=step1*numRows && index < ((step1+1)*numRows > history.length-1 ? history.length : (step1+1)*numRows)? (<tr>
                         {row.map((data, index)=>(index === 0 ? 
                             undefined : <td>{data}</td>
                         ))}
@@ -49,31 +67,32 @@ export default function RentInfo(){
                     </table>
                 </div>
                 <div>
-                    {history[0].length / numRows <= 1 ? <></> :
-                        <Paging maxStep={Math.round(history[0].length/numRows)} setStep={setStep1} step={step1} />}
+                    {history.length / numRows <= 1 ? <></> :
+                        <Paging maxStep={Math.round(history.length/numRows)} setStep={setStep1} step={step1} />}
                 </div>
             </>
             : 
             <div className="row">
-                <h2>{history[1].length > 0 ? "It seems they didn't return anything yet" : "It seems they didn't rent out anything"}</h2>
+                <h2>{history.length > 0 ? "It seems they didn't return anything yet" : "It seems they didn't rent out anything"}</h2>
             </div>: <></>}
-            {!loading ? history[1].length > 0 ? 
+            {!loading ? rentOut.length > 0 ? 
             <>
                 <div className="row">
                     <h2>Current Rentals</h2>
                     <table>
-                        <tr><th>Title</th><th>Rating</th><th>Description</th></tr>
-                        {history[1].map((row,index)=>index>=step2*numRows && index < ((step2+1)*numRows > history[1].length-1 ? history[1].length : (step2+1)*numRows)? (<tr>
+                    <tr><th>Title</th><th>Rating</th><th>Description</th><th>Rental Date</th></tr>
+                        {rentOut.map((row,index)=>index>=step2*numRows && index < ((step2+1)*numRows > rentOut.length-1 ? rentOut.length : (step2+1)*numRows)? (<tr>
                             {row.map((data, index)=>(index === 0 ? 
                             undefined : <td>{index === 1 ? <div>{data}</div> : data}</td>
                         ))}
+                        <td><button className="delete" onClick={()=>onClickReturn(rentOut[index][0])}>Return</button></td>
                         </tr>): <></>)}
                     </table>
-                    <div>
-                        {history[1].length / numRows <= 1 ? <></> :
-                        <Paging maxStep={Math.round(history[1].length/numRows)} setStep={setStep2} step={step2}/>
-                        }
-                    </div>
+                </div>
+                <div>
+                    {rentOut.length / numRows <= 1 ? <></> :
+                    <Paging maxStep={Math.round(rentOut.length/numRows)} setStep={setStep2} step={step2}/>
+                    }
                 </div>
             </>
             :
