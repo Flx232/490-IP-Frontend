@@ -4,10 +4,20 @@ const backendURL = `http://localhost:8000`;
 
 export default function Add(){
     const nav = useNavigate();
+
     const postCustomers = async(customer) =>{
         try{
-            await axios.post(`${backendURL}/customer/add`, customer);
-            nav('/customers');
+            const result = (await axios.post(`${backendURL}/customer/add`, customer));
+            const res = result.data;
+            if(res === "same email"){
+                window.alert("The email already exists");
+            }else if(res === "invalid postal"){
+                window.alert("The postal code doesn't exist");
+            }else if(res === "invalid phone"){
+                window.alert("This phone is already used by another person living in a different address");
+            }else{
+                nav('/customers');
+            }
         }catch(error){
             console.log(error);
         }
@@ -28,14 +38,43 @@ export default function Add(){
             postal:data.get("postal"),
             country:data.get("country"),
         }
-        console.log(customer);
+        const re_email = /^[A-Za-z0-9]+[A-Za-z0-9._]+[A-Za-z0-9]+@[A-Za-z0-9]+[A-Za-z0-9.-]+[A-Za-z0-9]+\.[A-Za-z]{2,}$/
+        if(!re_email.test(customer.email)){
+            alert('Please enter a valid email address.');
+            return;
+        }
+        const re_phone = /^[0-9\s]{9,12}$/
+        if(!re_phone.test(customer.phone)){
+            alert('Please enter a valid phone number.');
+            return;
+        }
+        const re_address=/^[0-9\s]{1,3} [A-Za-z]+ [A-Za-z]+$/
+        if(!re_address.test(customer.address)){
+            alert('Please enter a valid address.');
+            return;
+        }
+        const re_city=/^[A-Za-z]+ *[A-Za-z]*$/
+        if(!re_city.test(customer.city)){
+            alert('Please enter a valid address.');
+            return;
+        }
+        const re_district=/^[A-Za-z]+ *[A-Za-z]*$/
+        if(!re_district.test(customer.district)){
+            alert('Please enter a valid address.');
+            return;
+        }
+        const re_postal = /^[0-9\s]{6}$/
+        if(!re_postal.test(customer.postal)){
+            alert('Please enter a valid postal code.');
+            return;
+        }
         postCustomers(customer);
     }
     return(
         <>
             <div className='edit-form'>
                 <button className="back" onClick={()=>(nav('/customers'))}>←</button>
-                <form onSubmit={(e)=>handleFormSubmit(e)}>
+                <form noValidate onSubmit={(e)=>handleFormSubmit(e)}>
                     <h1>Add in a new customer:</h1>
                     <div className="grid">
                         <div className="field">
@@ -48,27 +87,33 @@ export default function Add(){
                         </div>
                         <div className="field">
                             <label for="email">Email</label><br></br>
-                            <input name="email" id="email" required></input>
+                            <input name="email" id="email" 
+                            pattern='/^[A-Za-z0-9]+[A-Za-z0-9._]+[A-Za-z0-9]+@[A-Za-z0-9]+[A-Za-z0-9.-]+[A-Za-z0-9]+\.[A-Za-z]{2,}$/'
+                            required></input>
                         </div>
                         <div className="field">
                             <label for="phone">Phone Number</label><br></br>
-                            <input name="phone" id="phone" required></input>
+                            <input name="phone" id="phone" pattern="/^[0-9\s]{9,12}$/" minLength="9" maxlength="12" 
+                            type="number"
+                            required></input>
                         </div>
                         <div className="field">
                             <label for="address">Address</label><br></br>
-                            <input name="address" id="address" required></input>
+                            <input name="address" id="address" pattern="/^[0-9\s]{1,3} [A-Za-z]+ [A-Za-z]+$/" required></input>
                         </div>
                         <div className="field">
                             <label for="city">City</label><br></br>
-                            <input name="city" id="city" required></input>
+                            <input name="city" id="city" pattern="/^[A-Za-z]+ *[A-Za-z]*$/" required></input>
                         </div>
                         <div className="field">
                             <label for="district">District</label><br></br>
-                            <input name="district" id="district" required></input>
+                            <input name="district" id="district" pattern="/^[A-Za-z]+ *[A-Za-z]*$/" required></input>
                         </div>
                         <div className="field">
                             <label for="postal">Postal Code</label><br></br>
-                            <input name="postal" id="postal"></input>
+                            <input name="postal" id="postal" pattern="/^[0-9\s]{6}$/" minLength="6" maxlength="6"
+                            type="number"
+                            ></input>
                         </div>
                     </div><br></br>
                     <label for="country">Country</label><br></br>

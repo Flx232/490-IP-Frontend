@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react'
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Paging from './Paging';
 import MovieInfo from './MovieInfo';
@@ -120,6 +119,7 @@ export default function Movies(){
             <div className = "modal" style={select ? {display:'block'} : {display:'none'}} onClick={(e) => (outsideModal(e))}>
                 <div className="modal-spacing">
                     {select ?<div className="card" style={{backgroundColor: "#fefefe", border: "1px solid #888"}}>
+                        <br></br>
                         <div className='description'>
                             <button className="close" onClick={()=>(onClose() )}>&times;</button>
                             <h2>Total number in Stock: {total[0][0]}</h2>
@@ -138,13 +138,6 @@ export default function Movies(){
                                 </form>
                             </div>
                         </MovieInfo>
-                        <div className="labels">
-                            <Link to="/manage" state={movie}>
-                                <div className='manage'>
-                                    <button>Manage</button>
-                                </div>
-                            </Link>
-                        </div>
                     </div> : <></>}
                 </div>
             </div>

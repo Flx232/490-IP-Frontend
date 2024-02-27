@@ -44,13 +44,17 @@ export default function Customers(){
     function handleDeleteClick(id){
         const deleteCustomer = async(id) =>{
             try{
-                await axios.delete(`${backendURL}/customer/remove/${id}`);
-                window.location.reload();
+                const result = await axios.delete(`${backendURL}/customer/remove/${id}`);
+                if(result.data === id)
+                    window.location.reload();
+                else
+                    window.alert("Customer still has movies rented out!");
             }catch(error){
                 console.log(error);
             }
         };
-        deleteCustomer(id);
+        deleteCustomer(id)
+        
     }
 
     function onClose(){
@@ -154,10 +158,8 @@ export default function Customers(){
                     </div>:<></>}
                 </div>
             </div>
-            <div className="footer">
-                {customers.length / numRows <= 1 ? <></> :
-                    <Paging maxStep={maxStep} setStep={setStep} step={step}/>}
-            </div>
+            {customers.length / numRows <= 1 ? <></> :
+                <Paging maxStep={maxStep} setStep={setStep} step={step}/>}
         </>
     );
 }
