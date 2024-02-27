@@ -79,12 +79,13 @@ export default function Edit(){
             alert('Please enter a valid district.');
             return;
         }
-        const re_postal = /^[0-9\s]{6}$/
-        if(!re_postal.test(customer.postal)){
-            alert('Please enter a valid postal code.');
-            return;
+        if(customer.postal.length > 0){
+            const re_postal = /^[0-9\s]{6}$/
+            if(!re_postal.test(customer.postal)){
+                alert('Please enter a valid postal code.');
+                return;
+            }
         }
-        console.log(customer);
         editCustomers(customer);
     }
     return(

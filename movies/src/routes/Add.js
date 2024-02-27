@@ -48,7 +48,7 @@ export default function Add(){
             alert('Please enter a valid phone number.');
             return;
         }
-        const re_address=/^[0-9\s]{1,3} [A-Za-z]+ [A-Za-z]+$/
+        const re_address=/[0-9\s]{1,3} [A-Za-z]+ [A-Za-z]+/
         if(!re_address.test(customer.address)){
             alert('Please enter a valid address.');
             return;
@@ -63,8 +63,9 @@ export default function Add(){
             alert('Please enter a valid address.');
             return;
         }
+        console.log(customer.postal.length);
         const re_postal = /^[0-9\s]{6}$/
-        if(!re_postal.test(customer.postal)){
+        if(customer.postal.length !== 0 && !re_postal.test(customer.postal)){
             alert('Please enter a valid postal code.');
             return;
         }
